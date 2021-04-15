@@ -108,3 +108,11 @@ window.onload = function(){
 	$('hidden-backload').removeClass('hidden', 3500);
 	
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+	const imgLightBox = document.querySelectorAll('.imgEffect');
+    M.Materialbox.init(imgLightBox, {
+		inDuration: 500,
+		outDuration: 500
+	});
+});
