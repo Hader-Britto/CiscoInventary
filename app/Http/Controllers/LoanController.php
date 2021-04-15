@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
-use App\Models\Loan;
+use App\Loan;
+use DataTables;
 
 class LoanController extends Controller
 {
@@ -12,10 +13,30 @@ class LoanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        //$loan = Loan::get();
+        //return view('Loans.index')->with(compact('loan'));
         
-        return view('loans.index');
+        $loan = Loan::first()->get();
+        
+        if ($request->ajax()) {
+            $data = Loan::first()->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+   
+                           $btn = '<a ref="javascript:void(0)" data-toggle="modal" data-target="#ajaxModel"  data-id="'.$row->id.'" data-original-title="Edit" class="far fa-edit editbtn"  style="color: #009bdd;">Edit</a>';
+   
+                           $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="far fa-trash-alt deletebtn"  style="color: #009bdd;">Delete</a>';
+    
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+      
+        return view('Loans.index')->with(compact('loan'));
     }
 
     /**
@@ -36,7 +57,10 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Loan::updateOrCreate(['id' => $request->loan_id],
+                ['loancode' => $request->loancode,'pdrp_id' => $request->pdrp_id,'serial' => $request->serial, 'channel' => $request->channel, 'idinventary' => $request->idinventary, 'estimateddate' => $request->estimateddate, 'realreturn' => $request->realreturn, 'dateloan' => $request->dateloan, 'state' => $request->state, 'pastdays' => $request->pastdays, 'observation' => $request->observation]);
+
+        return response()->json(['success' => 'loan Registrado correctamente']);
     }
 
     /**
@@ -58,7 +82,8 @@ class LoanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $loan = Loan::find($id);
+        return response()->json($loan);
     }
 
     /**
@@ -81,6 +106,9 @@ class LoanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $loan = Loan::findOrFail($id);
+        $loan->delete();
+     
+        return response()->json(['success'=>'loan deleted successfully.']);
     }
 }

@@ -7,8 +7,9 @@
     <title>Cisco Inventary</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @yield('metadatos')
 
-    <link rel="stylesheet" href="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     
     <script src="{{ asset('https://kit.fontawesome.com/68d9183b0a.js')}}" crossorigin="anonymous"></script>
@@ -23,6 +24,8 @@
     <!-- Bootstrap CSS
 		============================================ -->
    
+    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+
     <!-- owl.carousel CSS
 		============================================ -->
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.css') }}">
@@ -75,7 +78,7 @@
 </head>
 
 <!-- Pre loader -->
-<body class="hidden-backload">
+<body >
 <div class="center-preloader" id="onload">
 <div><img src="{{ asset('img/preloader.gif') }}"></div>
 </div>
@@ -151,6 +154,10 @@
     <script src="{{ asset('js/main.js') }}"></script>
     <!-- tawk chat JS
     -->
+
+    <script src="{{ asset('js/charts/Chart.js') }}"></script>
+    <script src="{{ asset('js/charts/bar-chart.js') }}"></script>
+
     
      <!-- data table JS
 		============================================ -->
@@ -186,7 +193,7 @@
     <script src="{{ asset('js/main.js')}}"></script>
     <!-- tawk chat JS
 		============================================ -->
-   
+    
 
 </body>
 

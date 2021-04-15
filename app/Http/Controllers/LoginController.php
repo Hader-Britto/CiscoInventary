@@ -21,7 +21,7 @@ class LoginController extends Controller
             if($adminCount > 0){
                 //echo "Success"; die;
                 Session::put('adminSession', $data['username']);
-                return redirect('/Developers');
+                return redirect('/inventory');
         	}else{
                 //echo "failed"; die;
                 return redirect('/')->with('flash_message_error','User Or Password Incorrect');

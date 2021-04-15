@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
-use App\Models\Chart;
+use App\Channel;
+use App\Loan;
+use DB;
 
 class ChartsController extends Controller
 {
@@ -12,74 +14,23 @@ class ChartsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function ChartLoanChannels()
     {
-        return view('charts.index');
+
+        $loans = DB::table('loan')
+        ->select('channel', DB::raw('count(channel) as count'))
+        ->groupBy('channel')
+        ->where('state', '=', 'taken');
+       
+
+        $ChannelFull = DB::table('channel')
+        ->joinSub($loans, 'loans_channel', function ($join){
+            $join->on('channel.id', '=', 'loans_channel.channel');
+        })->get();
+        $ChannelFull = json_decode(json_encode($ChannelFull),true);
+     
+        return view('charts.index')->with(compact('ChannelFull')); 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Chart  $chart
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Chart $chart)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Chart  $chart
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Chart $chart)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Chart  $chart
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Chart $chart)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Chart  $chart
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Chart $chart)
-    {
-        //
-    }
+    
 }
